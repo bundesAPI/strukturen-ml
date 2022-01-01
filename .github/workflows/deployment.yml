@@ -23,7 +23,7 @@ jobs:
     - name: install docker
       run: |
         sudo apt-get update 
-        apt-get install containerd=1.3.3-0ubuntu2
+        sudo apt-get install containerd=1.3.3-0ubuntu2
         
         sudo apt install docker.io --yes
         sudo snap install docker

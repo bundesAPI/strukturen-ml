@@ -224,6 +224,9 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
+node_modules/
+.serverless/
+
 # IPython
 profile_default/
 ipython_config.py

@@ -2,7 +2,7 @@
     "name": "orgchart-ml",
     "version": "0.0.1",
     "author": "Lilith Wittmann",
-    "dependencies": {
-        "serverless-python-requirements": "^5.0.1"
+    "devDependencies": {
+        "serverless-python-requirements": "^5.2.2"
     }
 }

@@ -21,16 +21,16 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
       # Setting up Docker Builder
-    - name: Set up Docker Builder
+    - name: Set up Docker Buildere
       uses: docker/setup-buildx-action@v1
     - name: install serverless
       run: npm install -g serverless
     - name: serverless install plugins
       run: serverless plugin install -n serverless-python-requirements
-    - name: serverless deploy
-      uses: serverless/github-action@master
-      with:
-        args: deploy
+    - name: deploy
+      run: |
+        serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+        sls deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrts.AWS_SECRET_ACCESS_KEY }}

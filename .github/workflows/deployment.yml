@@ -20,11 +20,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: install docker
-      run: |
-        sudo dockerd
-    - name: install poetry
-      run: pip install poetry
     - name: install serverless
       run: npm install -g serverless
     - name: serverless install plugins

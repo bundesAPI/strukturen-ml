@@ -1,7 +1,3 @@
-try:
-    import unzip_requirements
-except ImportError:
-    pass
 from mangum import Mangum
 import sentry_sdk
 sentry_sdk.init(

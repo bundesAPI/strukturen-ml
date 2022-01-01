@@ -15,8 +15,6 @@ custom:
   pythonRequirements:
     dockerless: true
     slim: true
-    zip: true
-
 functions:
   app:
     package:

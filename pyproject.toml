@@ -17,6 +17,7 @@ Shapely = "^1.8.0"
 scipy = "^1.7.3"
 colorthief = "^0.2.1"
 magnum = "^13.0.0"
+sentry-sdk = "^1.5.1"
 
 [tool.poetry.dev-dependencies]
 

@@ -14,7 +14,7 @@ plugins:
 custom:
   pythonRequirements:
     dockerless: true
-    slim: false
+    slim: true
     zip: true
 
 functions:

@@ -22,6 +22,7 @@ jobs:
 
     - name: install docker
       run: |
+        sudo rm -rf /etc/docker
         sudo snap install docker
     - name: install poetry
       run: pip install poetry

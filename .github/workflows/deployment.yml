@@ -22,8 +22,7 @@ jobs:
 
     - name: install docker
       run: |
-        sudo rm -rf /etc/docker
-        sudo snap install docker
+        dockerd
     - name: install poetry
       run: pip install poetry
     - name: install serverless

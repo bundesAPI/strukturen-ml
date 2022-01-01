@@ -20,12 +20,12 @@ jobs:
       # TODO: find a way todo this with hashes
     - name: generate requirements.txt
       run: poetry export --without-hashes -f requirements.txt --output requirements.txt
-      
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
+
     - name: serverless deploy
       uses: serverless/github-action@master
       with:

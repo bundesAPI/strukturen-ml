@@ -22,7 +22,7 @@ jobs:
 
     - name: install docker
       run: |
-        dockerd
+        sudo dockerd
     - name: install poetry
       run: pip install poetry
     - name: install serverless

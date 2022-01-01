@@ -20,6 +20,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: install docker
+      run: |
+        sudo apt-get update 
+        sudo apt install docker.io --yes
+        sudo snap install docker
     - name: install poetry
       run: pip install poetry
     - name: install serverless

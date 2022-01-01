@@ -9,7 +9,6 @@ python = ">=3.9,<3.11"
 requests = "^2.26.0"
 fastapi = "^0.70.0"
 pdfplumber = "^0.5.28"
-uvicorn = {extras = ["standard"], version = "^0.16.0"}
 gql = "^2.0.0"
 opencv-python = "^4.5.4"
 spacy = "^3.2.1"
@@ -20,6 +19,7 @@ sentry-sdk = "^1.5.1"
 mangum = "^0.12.3"
 
 [tool.poetry.dev-dependencies]
+uvicorn = {extras = ["standard"], version = "^0.16.0"}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

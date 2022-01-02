@@ -7,7 +7,6 @@ provider:
   name: aws
   runtime: python3.8
   region: eu-central-1
-  stage: ${opt:stage, "dev"}
   ecr:
     images:
       baseimage:

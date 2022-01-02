@@ -9,15 +9,21 @@ from gql import gql
 from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import StreamingResponse
+import logging
 
 from models import OrgchartParserResult, OrgchartItem, OrgchartEntryParserResult
 from orgchart import OrgchartParser, deduplicate_entries
 from orgchart_entry import OrgChartEntryParser
 from utils import get_client
+from fastapi_utils.timing import add_timing_middleware, record_timing
 
 AWS_LAMBDA_FUNCTION_NAME = os.getenv("AWS_LAMBDA_FUNCTION_NAME", None)
 AWS_REGION = os.getenv("AWS_REGION", None)
 AWS_VERSION = os.getenv("AWS_LAMBDA_FUNCTION_VERSION", None)
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 app = FastAPI(
     title="Strukturen-ML",
     description="Orgchart PDF Document Analysis",
@@ -35,6 +41,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+add_timing_middleware(app, record=logger.info, prefix="app", exclude="untimed")
 
 
 # TODO remove local dev credentials
@@ -86,6 +94,7 @@ async def get_orgchart_image(
     """
     client = get_client(DOMAIN, CLIENT_ID, CLIENT_SECRET)
     chart = client.execute(ORG_CHART_QUERY, variable_values={"id": orgchart_id})
+    logger.info("Fetched Orgchart")
     if not chart["orgChart"]:
         raise HTTPException(status_code=404, detail="OrgChart not found")
     if MEDIA_DOMAIN:
@@ -97,8 +106,10 @@ async def get_orgchart_image(
     parser = OrgchartParser(BytesIO(blob.content), page=page)
     file_obj = BytesIO()
     if len(position) == 4:
+        logger.info("Export Image")
         parser.get_image(position).save(file_obj, format="PNG")
     else:
+        logger.info("Export Image")
         parser.page.to_image(resolution=144).save(file_obj, format="PNG")
     file_obj.seek(0)
     return StreamingResponse(file_obj, media_type="image/png")

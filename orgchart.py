@@ -1,4 +1,5 @@
 import base64
+import logging
 from io import BytesIO
 from multiprocessing import Pool
 
@@ -13,11 +14,15 @@ from shapely.geometry import box
 
 from utils import ColorThiefWithWhite
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 class OrgchartParser:
     def __init__(self, document, page=None):
         with pdfplumber.open(document) as pdf:
             self.page = pdf.pages[page].dedupe_chars()
+            logger.info("Opened PDF File")
 
     def analyze_pdf(self):
         """
@@ -113,7 +118,7 @@ class OrgchartParser:
 
         return colors
 
-    def get_image(self, position, resolution=300):
+    def get_image(self, position, resolution=150):
         """
         get part of the pdf rendered as an image
         :param position: the area that should be rendered

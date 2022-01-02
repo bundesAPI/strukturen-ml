@@ -6,7 +6,14 @@ package:
 provider:
   name: aws
   runtime: python3.8
+  environment:
+    SENTRY_DSN: ${env:SENTRY_DSN}
+    CLIENT_ID: ${env:CLIENT_ID}
+    CLIENT_SECRET: ${env:CLIENT_SECRET}
+    SERVICE_DOMAIN: ${env:SERVICE_DOMAIN}
+    MEDIA_DOMAIN: ${env:MEDIA_DOMAIN}
   region: eu-central-1
+    stage: ${opt:stage, "dev"}
   ecr:
     images:
       baseimage:

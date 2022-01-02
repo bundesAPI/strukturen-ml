@@ -13,7 +13,7 @@ provider:
     SERVICE_DOMAIN: ${env:SERVICE_DOMAIN}
     MEDIA_DOMAIN: ${env:MEDIA_DOMAIN}
   region: eu-central-1
-    stage: ${opt:stage, "dev"}
+  stage: ${opt:stage, "dev"}
   ecr:
     images:
       baseimage:

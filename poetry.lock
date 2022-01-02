@@ -175,7 +175,7 @@ python-versions = ">=3.6"
 name = "httptools"
 version = "0.3.0"
 description = "A collection of framework independent HTTP protocol utils."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.5.0"
 
@@ -392,7 +392,7 @@ diagrams = ["jinja2", "railroad-diagrams"]
 name = "python-dotenv"
 version = "0.19.2"
 description = "Read key-value pairs from a .env file and set them as environment variables"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.5"
 
@@ -403,7 +403,7 @@ cli = ["click (>=5.0)"]
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 
@@ -741,7 +741,7 @@ standard = ["httptools (>=0.2.0,<0.4.0)", "watchgod (>=0.6)", "python-dotenv (>=
 name = "uvloop"
 version = "0.16.0"
 description = "Fast implementation of asyncio event loop on top of libuv"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
@@ -774,7 +774,7 @@ python-versions = "*"
 name = "watchgod"
 version = "0.7"
 description = "Simple, modern file watching and code reload in python."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.5"
 
@@ -782,14 +782,14 @@ python-versions = ">=3.5"
 name = "websockets"
 version = "10.1"
 description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11"
-content-hash = "573703ca723c5ecd199aa58d51840829c9a8c076c013fdf3f6c6d43283e0b0f5"
+content-hash = "49a757928ca69279077abe1e0b0bdd6ba7cf48d3716bd3356ec744c43f71d8aa"
 
 [metadata.files]
 anyio = [

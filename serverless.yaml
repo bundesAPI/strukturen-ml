@@ -1,4 +1,4 @@
-service: orgchart-ml
+service: orgchart-ml-2
 
 package:
   individually: true
@@ -10,27 +10,12 @@ provider:
   stage: ${opt:stage, "dev"}
   ecr:
     images:
-      saveImage:
+      baseimage:
         path: ./
 
 functions:
   app:
-    package:
-      include:
-        - "*.py"
-      exclude:
-        - "requirements.txt"
-        - "package.json"
-        - "package-lock.json"
-        - ".serverless/**"
-        - ".virtualenv/**"
-        - "node_modules/**"
-        - "node_modules/"
-
-    handler: lambda.handler
-    timeout: 120
-    environment:
-      STAGE: ${self:provider.stage}
+    image: baseimage
     events:
       - http:
           method: any

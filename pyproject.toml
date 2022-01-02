@@ -17,6 +17,7 @@ scipy = "^1.4.1"
 colorthief = "^0.2.1"
 sentry-sdk = "^1.5.1"
 mangum = "^0.12.3"
+uvicorn = "^0.16.0"
 
 [tool.poetry.dev-dependencies]
 uvicorn = {extras = ["standard"], version = "^0.16.0"}

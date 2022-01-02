@@ -32,7 +32,11 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        SERVICE_DOMAIN: ${{ secrets.SERVICE_DOMAIN }}
+        MEDIA_DOMAIN: ${{ secrets.MEDIA_DOMAIN }}
     - name: Create Sentry release
       uses: getsentry/action-release@v1
       env:

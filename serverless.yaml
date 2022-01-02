@@ -19,6 +19,8 @@ provider:
       baseimage:
         path: ./
 
+plugins:
+  - serverless-domain-manager
 functions:
   app:
     image: baseimage
@@ -26,3 +28,9 @@ functions:
       - http:
           method: any
           path: /{proxy+}
+custom:
+  customDomain:
+    domainName: 'ml.beta.strukturen.bund.dev'
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true

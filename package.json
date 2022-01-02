@@ -4,5 +4,8 @@
     "author": "Lilith Wittmann",
     "devDependencies": {
         "serverless-python-requirements": "^5.2.2"
+    },
+    "dependencies": {
+        "serverless-domain-manager": "^5.2.0"
     }
 }

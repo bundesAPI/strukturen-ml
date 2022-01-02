@@ -4,7 +4,10 @@ COPY *.py ${LAMBDA_TASK_ROOT}/
 RUN ls
 COPY requirements.txt ${LAMBDA_TASK_ROOT}/
 COPY model-last/ ${LAMBDA_TASK_ROOT}/model-last/
-RUN ls ${LAMBDA_TASK_ROOT}/
+COPY pyproject.toml ${LAMBDA_TASK_ROOT}/
+COPY poetry.lock ${LAMBDA_TASK_ROOT}/
+RUN pip install poetry
+RUN poetry export --without-hashes -f requirements.txt --output requirements.txt
 RUN yum update && \
   yum install -y \
   g++ \

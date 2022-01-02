@@ -1,6 +1,8 @@
 FROM public.ecr.aws/lambda/python:3.8
 
-COPY *.py requirements.txt ${LAMBDA_TASK_ROOT}
+COPY *.py ${LAMBDA_TASK_ROOT}
+RUN ls
+COPY requirements.txt ${LAMBDA_TASK_ROOT}
 COPY model-last/ ${LAMBDA_TASK_ROOT}/model-last/
 RUN ls ${LAMBDA_TASK_ROOT}
 RUN yum update && \

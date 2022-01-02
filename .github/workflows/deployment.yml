@@ -24,12 +24,12 @@ jobs:
       run: pip install poetry
     - name: generate requirements.txt
       run: poetry export --without-hashes -f requirements.txt --output requirements.txt
-    - name: cat requirements.txt
-      run: cat requirements.txt
     - name: install serverless
       run: npm install -g serverless
     - name: serverless install plugins
       run: serverless plugin install -n serverless-python-requirements
+    - name: cat requirements.txt
+      run: cat requirements.txt
     - name: deploy
       run: |
         serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY

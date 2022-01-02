@@ -24,6 +24,8 @@ jobs:
       run: pip install poetry
     - name: generate requirements.txt
       run: poetry export --without-hashes -f requirements.txt --output requirements.txt
+    - name: cat requirements.txt
+      run: cat requirements.txt
     - name: install serverless
       run: npm install -g serverless
     - name: serverless install plugins

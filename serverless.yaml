@@ -13,6 +13,8 @@ provider:
     SERVICE_DOMAIN: ${env:SERVICE_DOMAIN}
     MEDIA_DOMAIN: ${env:MEDIA_DOMAIN}
   region: eu-central-1
+  iam:
+    role: arn:aws:iam::889551677573:role/ml_beta_strukturen_bund_dev_lambda_role
   stage: ${opt:stage, "dev"}
   ecr:
     images:

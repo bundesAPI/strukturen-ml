@@ -15,7 +15,7 @@ RUN yum update && \
   unzip \
   libcurl4-openssl-dev\
   gcc \
-  gcc-c++ \
+  gcc-c++
 RUN python3.8 -m pip install -r requirements.txt -t ${LAMBDA_TASK_ROOT}/
 RUN python3.8 -m pip install awslambdaric --target ${LAMBDA_TASK_ROOT}/
 RUN yum install -y mesa-libGL

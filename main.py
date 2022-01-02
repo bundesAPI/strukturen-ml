@@ -15,7 +15,16 @@ from orgchart import OrgchartParser, deduplicate_entries
 from orgchart_entry import OrgChartEntryParser
 from utils import get_client
 
-app = FastAPI()
+AWS_LAMBDA_FUNCTION_NAME = os.getenv("AWS_LAMBDA_FUNCTION_NAME", None)
+AWS_REGION = os.getenv("AWS_REGION", None)
+app = FastAPI(
+    title=f"Strukturen-ML ({AWS_REGION}:{AWS_LAMBDA_FUNCTION_NAME})",
+    description="Orgchart PDF Document Analysis",
+    version=os.getenv("AWS_LAMBDA_FUNCTION_VERSION"),
+    contact={
+      "name": "bund.dev on Github",
+      "url": "https://github.com/bundesAPI/strukturen-ml",
+    })
 
 app.add_middleware(
     CORSMiddleware,

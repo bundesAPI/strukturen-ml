@@ -17,10 +17,11 @@ from utils import get_client
 
 AWS_LAMBDA_FUNCTION_NAME = os.getenv("AWS_LAMBDA_FUNCTION_NAME", None)
 AWS_REGION = os.getenv("AWS_REGION", None)
+AWS_VERSION = os.getenv("AWS_LAMBDA_FUNCTION_VERSION", None)
 app = FastAPI(
-    title=f"Strukturen-ML ({AWS_REGION}:{AWS_LAMBDA_FUNCTION_NAME})",
+    title="Strukturen-ML",
     description="Orgchart PDF Document Analysis",
-    version=os.getenv("AWS_LAMBDA_FUNCTION_VERSION"),
+    version=f"{AWS_REGION}:{AWS_LAMBDA_FUNCTION_NAME}:{AWS_VERSION}",
     contact={
         "name": "bund.dev on Github",
         "url": "https://github.com/bundesAPI/strukturen-ml",

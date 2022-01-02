@@ -9,11 +9,13 @@ class OrgchartItem(BaseModel):
     colors: List[List[int]]
     id: str
 
+
 class OrgchartParserResult(BaseModel):
     status: str
     items: List = None
     page: int
     method: str
+
 
 class NamedEntity(BaseModel):
     start: int
@@ -25,12 +27,14 @@ class Person(BaseModel):
     name: Optional[str]
     position: Optional[str]
 
+
 class Organisation(BaseModel):
     # camel case because frontend :-/
     name: Optional[str]
     shortName: Optional[str]
     dialCodes: Optional[List[str]] = []
     people: Optional[List[Person]] = []
+
 
 class OrgchartEntryParserResult(BaseModel):
     text: str

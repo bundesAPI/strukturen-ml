@@ -13,10 +13,9 @@ class OrgChartEntryParser:
         nlp = self.model(text)
         return nlp, nlp.to_json()
 
-
     def clean_str(self, str_):
         str_ = str_.replace("\n", " ")
-        str_ = re.sub(' +', ' ', str_)
+        str_ = re.sub(" +", " ", str_)
         return str_.strip()
 
     def parse_to_entities(self, nlp):
@@ -68,9 +67,7 @@ class OrgChartEntryParser:
                     else:
                         person.position = self.clean_str(entity.text)
 
-
         if person is not None:
             current_org_entity.people.append(person)
         entities.append(current_org_entity)
         return entities
-

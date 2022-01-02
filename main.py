@@ -22,9 +22,10 @@ app = FastAPI(
     description="Orgchart PDF Document Analysis",
     version=os.getenv("AWS_LAMBDA_FUNCTION_VERSION"),
     contact={
-      "name": "bund.dev on Github",
-      "url": "https://github.com/bundesAPI/strukturen-ml",
-    })
+        "name": "bund.dev on Github",
+        "url": "https://github.com/bundesAPI/strukturen-ml",
+    },
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -37,7 +38,10 @@ app.add_middleware(
 
 # TODO remove local dev credentials
 CLIENT_ID = os.getenv("CLIENT_ID", "oql40oIDbnsAdxH7btZVLRPagZbFPBp5itukk1NB")
-CLIENT_SECRET = os.getenv("CLIENT_SECRET", "VIZRSVjeBHSaOES3CJZ8eNsf0i6PPPGHGisuvlApZ3sL4Ef9DU2OLf4uATkwhrXzlLwd75IFYay7CxHYb56ZbllwmVG9083yilIB9Vn62AN9drAPLLWERVLc2O9OV1q4")
+CLIENT_SECRET = os.getenv(
+    "CLIENT_SECRET",
+    "VIZRSVjeBHSaOES3CJZ8eNsf0i6PPPGHGisuvlApZ3sL4Ef9DU2OLf4uATkwhrXzlLwd75IFYay7CxHYb56ZbllwmVG9083yilIB9Vn62AN9drAPLLWERVLc2O9OV1q4",
+)
 DOMAIN = os.getenv("SERVICE_DOMAIN", "http://127.0.0.1:8000")
 MEDIA_DOMAIN = os.getenv("MEDIA_DOMAIN", "http://127.0.0.1:8000")
 
@@ -52,7 +56,8 @@ ORG_CHART_QUERY = gql(
         createdAt
       }
     }
-    """)
+    """
+)
 
 
 ORG_CHART_ENTRY_PARSER = OrgChartEntryParser()
@@ -60,15 +65,17 @@ ORG_CHART_ENTRY_PARSER = OrgChartEntryParser()
 
 @app.get("/analyze-orgchart-entry/", response_model=OrgchartEntryParserResult)
 async def analyze_orgchart_item(text: str):
-    nlp,result = ORG_CHART_ENTRY_PARSER.parse(text)
+    nlp, result = ORG_CHART_ENTRY_PARSER.parse(text)
     result["parsed"] = ORG_CHART_ENTRY_PARSER.parse_to_entities(nlp)
     return result
 
 
-
 @app.get("/orgchart-image/")
-async def get_orgchart_image(orgchart_id: str, page: Optional[int],
-                                 position: Optional[List[Union[float, int]]] = Query([])):
+async def get_orgchart_image(
+    orgchart_id: str,
+    page: Optional[int],
+    position: Optional[List[Union[float, int]]] = Query([]),
+):
     """
     render an orgchart pdf as an image
     :param orgchart_id: the id of the orgchart in the backend
@@ -94,6 +101,7 @@ async def get_orgchart_image(orgchart_id: str, page: Optional[int],
         parser.page.to_image(resolution=144).save(file_obj, format="PNG")
     file_obj.seek(0)
     return StreamingResponse(file_obj, media_type="image/png")
+
 
 @app.get("/analyze-orgchart/", response_model=OrgchartParserResult)
 async def analyze_orgchart(orgchart_id: str, page: Optional[int]):
@@ -126,11 +134,14 @@ async def analyze_orgchart(orgchart_id: str, page: Optional[int]):
 
     items = []
     for itm in analyzed_items:
-        items.append(OrgchartItem(position=itm["position"],
-                                  colors=itm["colors"],
-                                  text=itm["text"],
-                                  id=str(uuid.uuid4())))
+        items.append(
+            OrgchartItem(
+                position=itm["position"],
+                colors=itm["colors"],
+                text=itm["text"],
+                id=str(uuid.uuid4()),
+            )
+        )
 
     result = OrgchartParserResult(status="ok", items=items, page=page, method=method)
     return result
-

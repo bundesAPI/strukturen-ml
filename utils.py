@@ -6,26 +6,28 @@ from colorthief import ColorThief, MMCQ
 
 def get_jwt(domain, client_id, client_secret):
     headers = {
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Cache-Control": "no-cache",
+        "Content-Type": "application/x-www-form-urlencoded",
     }
 
     data = {
-        'client_id': client_id,
-        'client_secret': client_secret,
-        'grant_type': 'client_credentials'
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "grant_type": "client_credentials",
     }
 
-    response = requests.post(f'{domain}/oauth/token/', headers=headers, data=data)
+    response = requests.post(f"{domain}/oauth/token/", headers=headers, data=data)
     return response.json()
+
 
 def get_client(domain, client_id, client_secret):
     jwt = get_jwt(domain, client_id, client_secret)
-    transport = RequestsHTTPTransport(url=f'{domain}/graphql',
-                                      headers={'Authorization': f'Bearer {jwt["access_token"]}'})
+    transport = RequestsHTTPTransport(
+        url=f"{domain}/graphql",
+        headers={"Authorization": f'Bearer {jwt["access_token"]}'},
+    )
     client = Client(transport=transport, fetch_schema_from_transport=True)
     return client
-
 
 
 class ColorThiefWithWhite(ColorThief):
@@ -40,7 +42,7 @@ class ColorThiefWithWhite(ColorThief):
                         greater the likelihood that colors will be missed.
         :return list: a list of tuple in the form (r, g, b)
         """
-        image = self.image.convert('RGBA')
+        image = self.image.convert("RGBA")
         width, height = image.size
         pixels = image.getdata()
         pixel_count = width * height

@@ -29,8 +29,14 @@ class OrgchartParser:
         for grp in [self.page.rects, self.page.images]:
             for rect in grp:
                 try:
-                    text = self.page.crop((rect["x0"], rect["top"], rect["x1"], rect["bottom"],)).extract_text(
-                        x_tolerance=3, y_tolerance=3)
+                    text = self.page.crop(
+                        (
+                            rect["x0"],
+                            rect["top"],
+                            rect["x1"],
+                            rect["bottom"],
+                        )
+                    ).extract_text(x_tolerance=3, y_tolerance=3)
                     if not text:
                         continue
                     text = text.strip()
@@ -38,8 +44,13 @@ class OrgchartParser:
                     size = (rect["x1"] - rect["x0"]) * (rect["bottom"] - rect["top"])
                     if 0 < text_len < 1000 and size > 400:
                         obj = {
-                            "position": [int(rect["x0"]), int(rect["top"]), int(rect["x1"]), int(rect["bottom"])],
-                            "text": text
+                            "position": [
+                                int(rect["x0"]),
+                                int(rect["top"]),
+                                int(rect["x1"]),
+                                int(rect["bottom"]),
+                            ],
+                            "text": text,
                         }
                         if text not in texts:
                             texts.append(text)
@@ -54,7 +65,7 @@ class OrgchartParser:
         :param entries: list of entries
         :return: list of entries with added primary color
         """
-        pool = Pool(processes = 50)
+        pool = Pool(processes=50)
         result = pool.map(self.analyze_primary_colour_entry, entries)
         return result
 
@@ -69,12 +80,12 @@ class OrgchartParser:
         self.get_image(entry["position"], resolution=50).save(file_obj, format="PNG")
         file_obj.seek(0)
         color_thief = ColorThiefWithWhite(file_obj)
-        colors = list(set(color_thief.get_palette(color_count=n_colors,  quality=1)))
+        colors = list(set(color_thief.get_palette(color_count=n_colors, quality=1)))
         print(colors)
         if len(colors) > 1:
             entry["colors"] = colors
         else:
-            entry["colors"]  = colors
+            entry["colors"] = colors
         return entry
 
     def remove_to_close_colors(self, colors):
@@ -93,8 +104,8 @@ class OrgchartParser:
                 if distance < 10:
                     index = np.where(distances == distance)
                     print(index)
-                    if len(colors) > index[0][0]+1-minus:
-                        del colors[index[0][0]+1-minus]
+                    if len(colors) > index[0][0] + 1 - minus:
+                        del colors[index[0][0] + 1 - minus]
                     else:
                         break
                     minus += 1
@@ -120,22 +131,33 @@ class OrgchartParser:
         imgGry = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         ret, thrash = cv2.threshold(imgGry, 205, 255, cv2.CHAIN_APPROX_NONE)
-        contours, hierarchy = cv2.findContours(thrash, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        contours, hierarchy = cv2.findContours(
+            thrash, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE
+        )
         texts = []
         rect_json = []
         for contour in contours:
-            approx = cv2.approxPolyDP(contour, 0.01 * cv2.arcLength(contour, True), True)
+            approx = cv2.approxPolyDP(
+                contour, 0.01 * cv2.arcLength(contour, True), True
+            )
 
             x = approx.ravel()[0]
             y = approx.ravel()[1] - 5
             x, y, w, h = cv2.boundingRect(approx)
             size = w * h
             if 0 < len(approx) < 25 and size > 900:
-                text = self.page.crop((x, y, x + w, y + h,)).extract_text(x_tolerance=3, y_tolerance=3)
+                text = self.page.crop(
+                    (
+                        x,
+                        y,
+                        x + w,
+                        y + h,
+                    )
+                ).extract_text(x_tolerance=3, y_tolerance=3)
                 if text:
                     obj = {
                         "position": [int(x), int(y), int(x + w), int(y + h)],
-                        "text": text.strip()
+                        "text": text.strip(),
                     }
                     if len(text) > 0 and len(text) < 1000:
                         texts.append(text)

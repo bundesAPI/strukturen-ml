@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 
@@ -35,7 +36,7 @@ def handler(event, context):
         # if there is a records list it should be always sns
         event = json.loads(event["Records"][0]["Sns"]["Message"])
         if event["action"] in SNS_ACTIONS_MAPPING:
-            await SNS_ACTIONS_MAPPING[event["action"]](**event["parameters"])
+            asyncio.run(SNS_ACTIONS_MAPPING[event["action"]](**event["parameters"]))
         return {"ok": True, "message": "SNS Task executed successfully"}
     # end of ugly glue code
 

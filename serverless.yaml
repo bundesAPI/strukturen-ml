@@ -12,6 +12,7 @@ provider:
     CLIENT_SECRET: ${env:CLIENT_SECRET}
     SERVICE_DOMAIN: ${env:SERVICE_DOMAIN}
     MEDIA_DOMAIN: ${env:MEDIA_DOMAIN}
+    CACHE_BUCKET: ${env:CACHE_BUCKET}
   region: eu-central-1
   iam:
     role: arn:aws:iam::889551677573:role/ml_beta_strukturen_bund_dev_lambda_role

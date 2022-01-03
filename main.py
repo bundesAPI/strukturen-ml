@@ -8,7 +8,7 @@ from fastapi import FastAPI, HTTPException, Query
 from gql import gql
 from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
-from starlette.responses import StreamingResponse
+from starlette.responses import StreamingResponse, Response
 import logging
 
 from cache import S3Cache
@@ -135,7 +135,8 @@ async def get_orgchart_image(
     if CACHE:
         CACHE.set_item(cache_key, file_obj)
         file_obj.seek(0)
-    return StreamingResponse(file_obj, media_type="image/png")
+    return Response(content=file_obj.read(), media_type="image/png")
+    # return StreamingResponse(file_obj, media_type="image/png")
 
 
 @app.get("/analyze-orgchart/", response_model=OrgchartParserResult)

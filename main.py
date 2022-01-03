@@ -11,6 +11,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import StreamingResponse
 import logging
 
+from cache import S3Cache
 from models import OrgchartParserResult, OrgchartItem, OrgchartEntryParserResult
 from orgchart import OrgchartParser, deduplicate_entries
 from orgchart_entry import OrgChartEntryParser
@@ -20,6 +21,12 @@ from fastapi_utils.timing import add_timing_middleware, record_timing
 AWS_LAMBDA_FUNCTION_NAME = os.getenv("AWS_LAMBDA_FUNCTION_NAME", None)
 AWS_REGION = os.getenv("AWS_REGION", None)
 AWS_VERSION = os.getenv("AWS_LAMBDA_FUNCTION_VERSION", None)
+CACHE_BUCKET = os.getenv("CACHE_BUCKET", None)
+
+if CACHE_BUCKET:
+    CACHE = S3Cache(CACHE_BUCKET)
+else:
+    CACHE = None
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -95,16 +102,29 @@ async def get_orgchart_image(
     client = get_client(DOMAIN, CLIENT_ID, CLIENT_SECRET)
     chart = client.execute(ORG_CHART_QUERY, variable_values={"id": orgchart_id})
     logger.info("Fetched Orgchart")
+
     if not chart["orgChart"]:
         raise HTTPException(status_code=404, detail="OrgChart not found")
+
+    # check if item is in cache and return if exsist
+    cache_key = (
+        orgchart_id + "-" + str(page) + "-" + "-".join([str(p) for p in position])
+    )
+    if CACHE:
+        item = CACHE.get_item(cache_key)
+        if item:
+            return StreamingResponse(item, media_type="image/png")
+
+    # fetch orgchart as pdf
     if MEDIA_DOMAIN:
         url = f'{MEDIA_DOMAIN}{chart["orgChart"]["document"]}'
     else:
         url = chart["orgChart"]["document"]
-
     blob = requests.get(url, stream=True)
     parser = OrgchartParser(BytesIO(blob.content), page=page)
     file_obj = BytesIO()
+
+    # parse orgchart
     if len(position) == 4:
         logger.info("Export Image")
         parser.get_image(position).save(file_obj, format="PNG")
@@ -112,6 +132,9 @@ async def get_orgchart_image(
         logger.info("Export Image")
         parser.page.to_image(resolution=144).save(file_obj, format="PNG")
     file_obj.seek(0)
+    if CACHE:
+        CACHE.set_item(cache_key, file_obj)
+        file_obj.seek(0)
     return StreamingResponse(file_obj, media_type="image/png")
 
 

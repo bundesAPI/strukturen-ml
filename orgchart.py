@@ -118,7 +118,7 @@ class OrgchartParser:
 
         return colors
 
-    def get_image(self, position, resolution=150):
+    def get_image(self, position, resolution=200):
         """
         get part of the pdf rendered as an image
         :param position: the area that should be rendered

@@ -36,6 +36,7 @@ jobs:
         CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         SERVICE_DOMAIN: ${{ secrets.SERVICE_DOMAIN }}
         MEDIA_DOMAIN: ${{ secrets.MEDIA_DOMAIN }}
+        CACHE_BUCKET: ${{ secrets.CACHE_BUCKET }}
     - name: Create Sentry release
       uses: getsentry/action-release@v1
       env:

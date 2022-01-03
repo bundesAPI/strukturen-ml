@@ -37,6 +37,9 @@ functions:
           arn: arn:aws:sns:eu-central-1:889551677573:orgchart-image-generator-ml-bund-dev
       - sns:
           arn: arn:aws:sns:eu-central-1:889551677573:orgchart-parser-ml-bund-dev
+      - sns:
+          topicName: orgchart-ml-test-topic
+
 custom:
   customDomain:
     autoDomain: true

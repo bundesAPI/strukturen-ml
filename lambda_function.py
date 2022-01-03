@@ -27,8 +27,6 @@ SNS_ACTIONS_MAPPING = {
 
 
 def handler(event, context):
-    print(event)
-    print(context)
     if "requestContext" not in event:
         event["requestContext"] = {}
 
@@ -37,7 +35,7 @@ def handler(event, context):
         # if there is a records list it should be always sns
         event = json.loads(event["Records"][0]["Sns"]["Message"])
         if event["action"] in SNS_ACTIONS_MAPPING:
-            SNS_ACTIONS_MAPPING[event["action"]](**event["parameters"])
+            await SNS_ACTIONS_MAPPING[event["action"]](**event["parameters"])
         return {"ok": True, "message": "SNS Task executed successfully"}
     # end of ugly glue code
 

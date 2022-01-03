@@ -19,4 +19,15 @@ def main_endpoint_test():
     return {"message": "Just another strukturen API! [orgchart-ml]"}
 
 
-handler = Mangum(app)
+def handler(event, context):
+    print(event)
+    print(context)
+    if "requestContext" not in event:
+        event["requestContext"] = {}
+
+    asgi_handler = Mangum(app)
+    response = asgi_handler(
+        event, context
+    )  # Call the instance with the event arguments
+
+    return response

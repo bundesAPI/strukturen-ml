@@ -33,13 +33,6 @@ functions:
       - http:
           method: any
           path: /{proxy+}
-  dispatcher:
-    command:
-      - sns_handler.sns_handler
-    entryPoint:
-      - '/lambda-entrypoint.sh'
-    image: baseimage
-    events:
       - sns:
           arn: arn:aws:sns:eu-central-1:889551677573:orgchart-image-generator-ml-bund-dev
       - sns:

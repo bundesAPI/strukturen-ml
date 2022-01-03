@@ -6,6 +6,9 @@ package:
 provider:
   name: aws
   runtime: python3.8
+  apiGateway:
+    binaryMediaTypes:
+      - '*/*'
   environment:
     SENTRY_DSN: ${env:SENTRY_DSN}
     CLIENT_ID: ${env:CLIENT_ID}

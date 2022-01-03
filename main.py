@@ -86,7 +86,7 @@ async def analyze_orgchart_item(text: str):
     return result
 
 
-@app.get("/orgchart-image/")
+@app.get("/orgchart-image/", response_class=Response(media_type="image/png"))
 async def get_orgchart_image(
     orgchart_id: str,
     page: Optional[int],
@@ -135,8 +135,7 @@ async def get_orgchart_image(
     if CACHE:
         CACHE.set_item(cache_key, file_obj)
         file_obj.seek(0)
-    return Response(content=file_obj.read(), media_type="image/png")
-    # return StreamingResponse(file_obj, media_type="image/png")
+    return StreamingResponse(file_obj, media_type="image/png")
 
 
 @app.get("/analyze-orgchart/", response_model=OrgchartParserResult)

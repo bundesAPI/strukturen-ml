@@ -33,6 +33,10 @@ functions:
       - http:
           method: any
           path: /{proxy+}
+      - sns:
+          topicName: orgchart-image-generator-ml-bund-dev
+      - sns:
+          topicName: orgchart-parser-ml-bund-dev
 custom:
   customDomain:
     autoDomain: true

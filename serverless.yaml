@@ -29,6 +29,7 @@ plugins:
 functions:
   app:
     image: baseimage
+    handler: lambda_function.handler
     events:
       - http:
           method: any

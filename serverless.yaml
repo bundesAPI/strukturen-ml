@@ -35,6 +35,7 @@ functions:
           path: /{proxy+}
   dispatcher:
     handler: sns_handler.sns_handler
+    events:
     - sns:
         arn: arn:aws:sns:eu-central-1:889551677573:orgchart-image-generator-ml-bund-dev
     - sns:

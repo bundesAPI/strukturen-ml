@@ -34,7 +34,7 @@ functions:
           method: any
           path: /{proxy+}
   dispatcher:
-    handler:
+    command:
       - sns_handler.sns_handler
     entryPoint:
       - '/lambda-entrypoint.sh'

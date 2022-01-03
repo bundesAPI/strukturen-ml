@@ -1,3 +1,4 @@
+import json
 import os
 
 import sentry_sdk
@@ -10,7 +11,7 @@ sentry_sdk.init(
     traces_sample_rate=1.0,
 )
 
-from main import app
+from main import app, analyze_orgchart, get_orgchart_image
 from mangum import Mangum
 
 
@@ -19,11 +20,26 @@ def main_endpoint_test():
     return {"message": "Just another strukturen API! [orgchart-ml]"}
 
 
+SNS_ACTIONS_MAPPING = {
+    "analyze-orgchart": analyze_orgchart,
+    "orgchart-image": get_orgchart_image,
+}
+
+
 def handler(event, context):
     print(event)
     print(context)
     if "requestContext" not in event:
         event["requestContext"] = {}
+
+    # ugly glue-code to make serverless custom images combined with sns and magnum work for now
+    if "Records" in event:
+        # if there is a records list it should be always sns
+        event = json.loads(event["Records"][0]["Sns"]["Message"])
+        if event["action"] in SNS_ACTIONS_MAPPING:
+            SNS_ACTIONS_MAPPING[event["action"]](**event["parameters"])
+        return {"ok": True, "message": "SNS Task executed successfully"}
+    # end of ugly glue code
 
     asgi_handler = Mangum(app)
     response = asgi_handler(

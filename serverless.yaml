@@ -39,9 +39,9 @@ functions:
           method: any
           path: /{proxy+}
       - sns:
-          arn: arn:aws:sns:eu-central-1:889551677573:orgchart-image-generator-ml-bund-dev
+          arn: ${env:ORGCHART_IMAGE_CACHING_SNS_TOPIC}
       - sns:
-          arn: arn:aws:sns:eu-central-1:889551677573:orgchart-parser-ml-bund-dev
+          arn: ${env:ORGCHART_PARSER_SNS_TOPIC}
 
 
 custom:

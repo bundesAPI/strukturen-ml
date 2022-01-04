@@ -14,10 +14,10 @@ provider:
     CLIENT_ID: ${env:CLIENT_ID}
     CLIENT_SECRET: ${env:CLIENT_SECRET}
     SERVICE_DOMAIN: ${env:SERVICE_DOMAIN}
-    MEDIA_DOMAIN: ${env:MEDIA_DOMAIN}
     CACHE_BUCKET: ${env:CACHE_BUCKET}
     ORGCHART_IMAGE_CACHING_SNS_TOPIC: ${env:ORGCHART_IMAGE_CACHING_SNS_TOPIC}
     ORGCHART_PARSER_SNS_TOPIC: ${env:ORGCHART_PARSER_SNS_TOPIC}
+    MEDIA_DOMAIN: ${env:MEDIA_DOMAIN}
   region: eu-central-1
   memorySize: 1024
   timeout: 300
@@ -39,9 +39,10 @@ functions:
           method: any
           path: /{proxy+}
       - sns:
-          arn: ${env:ORGCHART_IMAGE_CACHING_SNS_TOPIC}
+          arn: arn:aws:sns:eu-central-1:889551677573:orgchart-image-generator-ml-bund-dev
       - sns:
-          arn: ${env:ORGCHART_PARSER_SNS_TOPIC}
+          arn: arn:aws:sns:eu-central-1:889551677573:orgchart-parser-ml-bund-dev
+
 
 custom:
   customDomain:

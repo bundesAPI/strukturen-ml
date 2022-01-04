@@ -26,8 +26,7 @@ Every method works the same way with the same GET-Parameters as documented in th
     "action": "analyze-orgchart",
     "parameters": {
         "orgchart_id": "T3JnQ2hhcnROb2RlOjQ=",
-        "page": 0,
-        "position": [78, 590, 131, 645]
+        "page": 0
     }
 }
 ```

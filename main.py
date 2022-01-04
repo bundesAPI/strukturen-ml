@@ -15,6 +15,7 @@ from cache import S3Cache
 from models import OrgchartParserResult, OrgchartItem, OrgchartEntryParserResult
 from orgchart import OrgchartParser, deduplicate_entries
 from orgchart_entry import OrgChartEntryParser
+from sns import generate_image_sns
 from utils import get_client
 from fastapi_utils.timing import add_timing_middleware, record_timing
 
@@ -60,6 +61,7 @@ CLIENT_SECRET = os.getenv(
 )
 DOMAIN = os.getenv("SERVICE_DOMAIN", "http://127.0.0.1:8000")
 MEDIA_DOMAIN = os.getenv("MEDIA_DOMAIN", None)
+ORGCHART_IMAGE_CACHING_SNS_TOPIC = os.getenv("ORGCHART_IMAGE_CACHING_SNS_TOPIC", None)
 
 
 ORG_CHART_QUERY = gql(
@@ -169,6 +171,10 @@ async def analyze_orgchart(orgchart_id: str, page: Optional[int]):
 
     items = []
     for itm in analyzed_items:
+        if ORGCHART_IMAGE_CACHING_SNS_TOPIC:
+            generate_image_sns(
+                ORGCHART_IMAGE_CACHING_SNS_TOPIC, orgchart_id, page, itm["position"]
+            )
         items.append(
             OrgchartItem(
                 position=itm["position"],
@@ -177,6 +183,9 @@ async def analyze_orgchart(orgchart_id: str, page: Optional[int]):
                 id=str(uuid.uuid4()),
             )
         )
+
+    if ORGCHART_IMAGE_CACHING_SNS_TOPIC:
+        generate_image_sns(ORGCHART_IMAGE_CACHING_SNS_TOPIC, orgchart_id, page)
 
     result = OrgchartParserResult(status="ok", items=items, page=page, method=method)
     return result

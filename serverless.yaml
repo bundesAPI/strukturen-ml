@@ -18,6 +18,7 @@ provider:
     ORGCHART_IMAGE_CACHING_SNS_TOPIC: ${env:ORGCHART_IMAGE_CACHING_SNS_TOPIC}
     ORGCHART_PARSER_SNS_TOPIC: ${env:ORGCHART_PARSER_SNS_TOPIC}
     MEDIA_DOMAIN: ${env:MEDIA_DOMAIN}
+    DOMAIN: ${env:DOMAIN}
   region: eu-central-1
   memorySize: 1024
   timeout: 300

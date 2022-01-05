@@ -40,6 +40,7 @@ jobs:
         ORGCHART_IMAGE_CACHING_SNS_TOPIC: ${{ secrets.ORGCHART_IMAGE_CACHING_SNS_TOPIC }}
         LAMBDA_EXECUTION_ROLE_ARN: ${{ secrets.LAMBDA_EXECUTION_ROLE_ARN }}
         DOMAIN: ${{ secrets.DOMAIN }}
+        CACHE_BUCKET: ${{ secrets.CACHE_BUCKET }}
     - name: Create Sentry release
       uses: getsentry/action-release@v1
       env:

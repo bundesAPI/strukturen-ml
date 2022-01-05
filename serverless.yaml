@@ -23,7 +23,7 @@ provider:
   memorySize: 1024
   timeout: 300
   iam:
-    role: ${env:LAMBDA_EXECUTION_ROLE_ARN}
+    role: arn:aws:iam::889551677573:role/ml_beta_strukturen_bund_dev_lambda_role
   stage: ${opt:stage, "dev"}
   ecr:
     images:

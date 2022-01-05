@@ -21,8 +21,7 @@ provider:
   region: eu-central-1
   memorySize: 1024
   timeout: 300
-  iam:
-    role: arn:aws:iam::889551677573:role/ml_beta_strukturen_bund_dev_lambda_role
+    role: ${env:LAMBDA_EXECUTION_ROLE_ARN}
   stage: ${opt:stage, "dev"}
   ecr:
     images:
@@ -47,7 +46,7 @@ functions:
 custom:
   customDomain:
     autoDomain: true
-    domainName: ml.beta.strukturen.bund.dev
+    domainName: ${env:DOMAIN}
     endpointType: 'regional'
     securityPolicy: tls_1_2
     basePath: ''

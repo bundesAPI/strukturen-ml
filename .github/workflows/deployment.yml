@@ -38,6 +38,8 @@ jobs:
         MEDIA_DOMAIN: ${{ secrets.MEDIA_DOMAIN }}
         ORGCHART_PARSER_SNS_TOPIC: ${{ secrets.ORGCHART_PARSER_SNS_TOPIC }}
         ORGCHART_IMAGE_CACHING_SNS_TOPIC: ${{ secrets.ORGCHART_IMAGE_CACHING_SNS_TOPIC }}
+        LAMBDA_EXECUTION_ROLE_ARN: ${{ secrets.LAMBDA_EXECUTION_ROLE_ARN }}
+        DOMAIN: ${{ secrets.DOMAIN }}
     - name: Create Sentry release
       uses: getsentry/action-release@v1
       env:

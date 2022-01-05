@@ -21,6 +21,7 @@ provider:
   region: eu-central-1
   memorySize: 1024
   timeout: 300
+  iam:
     role: ${env:LAMBDA_EXECUTION_ROLE_ARN}
   stage: ${opt:stage, "dev"}
   ecr:

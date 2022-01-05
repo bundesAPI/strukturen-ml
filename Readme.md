@@ -32,8 +32,8 @@ Every method works the same way with the same GET-Parameters as documented in th
 ```
 
 
-### Service Configuration
-This service is partly configured via (terraform)[https://github.com/bundesAPI/terraform/blob/main/orgchart_ml.tf]. The deployment pipeline (via serverless.yaml) needs the following environment variables in its build context:
+## Service Configuration
+This service is partly configured via [terraform](https://github.com/bundesAPI/terraform/blob/main/orgchart_ml.tf). The deployment pipeline (via serverless.yaml) needs the following environment variables in its build context:
 
 | Variable                         | Value                                                                                                                |
 |----------------------------------|----------------------------------------------------------------------------------------------------------------------|

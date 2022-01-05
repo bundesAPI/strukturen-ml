@@ -48,7 +48,7 @@ functions:
 custom:
   customDomain:
     autoDomain: true
-    domainName: ${env:DOMAIN}
+    domainName: ml.beta.strukturen.bund.dev
     endpointType: 'regional'
     securityPolicy: tls_1_2
     basePath: ''

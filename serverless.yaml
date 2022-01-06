@@ -43,14 +43,3 @@ functions:
           arn: ${env:ORGCHART_IMAGE_CACHING_SNS_TOPIC}
       - sns:
           arn: ${env:ORGCHART_PARSER_SNS_TOPIC}
-
-
-custom:
-  customDomain:
-    autoDomain: true
-    domainName: ml.beta.strukturen.bund.dev
-    endpointType: 'regional'
-    securityPolicy: tls_1_2
-    basePath: ''
-    stage: ${self:provider.stage}
-    createRoute53Record: true

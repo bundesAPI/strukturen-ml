@@ -5,8 +5,6 @@ from typing import Optional, List, Union
 
 import requests
 from fastapi import FastAPI, HTTPException, Query
-from gql import gql
-from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import StreamingResponse, Response
 import logging

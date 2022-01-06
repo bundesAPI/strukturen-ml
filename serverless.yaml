@@ -1,4 +1,4 @@
-service: orgchart-ml-2
+service: orgchart-ml-3
 
 package:
   individually: true
@@ -48,7 +48,7 @@ functions:
 custom:
   customDomain:
     autoDomain: true
-    domainName: ml.api.beta.bund.dev
+    domainName: ${env:DOMAIN}
     endpointType: 'regional'
     securityPolicy: tls_1_2
     basePath: ''

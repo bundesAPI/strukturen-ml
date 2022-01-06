@@ -15,6 +15,7 @@ from cache import S3Cache
 from models import OrgchartParserResult, OrgchartItem, OrgchartEntryParserResult
 from orgchart import OrgchartParser, deduplicate_entries
 from orgchart_entry import OrgChartEntryParser
+from queries import ORG_CHART_QUERY, UPDATE_ORG_CHART
 from sns import generate_image_sns
 from utils import get_client
 from fastapi_utils.timing import add_timing_middleware, record_timing
@@ -62,20 +63,6 @@ CLIENT_SECRET = os.getenv(
 DOMAIN = os.getenv("SERVICE_DOMAIN", "http://127.0.0.1:8000")
 MEDIA_DOMAIN = os.getenv("MEDIA_DOMAIN", None)
 ORGCHART_IMAGE_CACHING_SNS_TOPIC = os.getenv("ORGCHART_IMAGE_CACHING_SNS_TOPIC", None)
-
-
-ORG_CHART_QUERY = gql(
-    """
-    query getOrgChart($id: ID!){
-      orgChart(id: $id) {
-        id
-        document
-        documentHash
-        createdAt
-      }
-    }
-    """
-)
 
 
 ORG_CHART_ENTRY_PARSER = OrgChartEntryParser()
@@ -143,7 +130,7 @@ async def get_orgchart_image(
 @app.get("/analyze-orgchart/", response_model=OrgchartParserResult)
 async def analyze_orgchart(orgchart_id: str, page: Optional[int]):
     """
-    analyze an orgchart pdf file with multiple strategies (finding elements by pdf parsing and opencv)
+    analyze an orgchart pdf file with multiple strategies (finding elements by pdf parsing and opencv). If an element has not been parsed yet it will be stored.
     :param orgchart_id: id of the orgchart
     :param page: page number that should be analyzed
     :return: the analyzed orgchart as json
@@ -188,4 +175,15 @@ async def analyze_orgchart(orgchart_id: str, page: Optional[int]):
         generate_image_sns(ORGCHART_IMAGE_CACHING_SNS_TOPIC, orgchart_id, page)
 
     result = OrgchartParserResult(status="ok", items=items, page=page, method=method)
+
+    # if the element is not yet marked as imported
+    if chart["orgChart"]["status"] == "NEW":
+        client.execute(
+            UPDATE_ORG_CHART,
+            variable_values={
+                "orgChartId": orgchart_id,
+                "status": "PARSED",
+                "rawSource": result.json(),
+            },
+        )
     return result

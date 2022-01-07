@@ -154,8 +154,8 @@ def cache_all_orgchart_images(orgchart_id: str, page: Optional[int] = 0):
     parser = OrgchartParser(BytesIO(blob.content), page=page)
     img = parser.page.to_image(resolution=144)
 
-    for item in orgchart_source["items"]:
-        position = item["position"]
+    for item in orgchart_source:
+        position = item["source"]["position"]
         cache_key = (
             orgchart_id + "-" + str(page) + "-" + "-".join([str(p) for p in position])
         )

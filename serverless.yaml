@@ -21,7 +21,7 @@ provider:
     DOMAIN: ${env:DOMAIN}
   region: eu-central-1
   memorySize: 1024
-  timeout: 300
+  timeout: 900
   iam:
     role: arn:aws:iam::889551677573:role/ml_beta_strukturen_bund_dev_lambda_role
   stage: ${opt:stage, "dev"}

@@ -7,11 +7,13 @@ import pdfplumber
 import requests
 import cv2
 from shapely.geometry import Polygon
+from PIL import Image
 
 from shapely.strtree import STRtree
 from shapely.geometry import box
 
 from utils import ColorThiefWithWhite
+from fastapi_utils.timing import add_timing_middleware, record_timing
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -69,23 +71,37 @@ class OrgchartParser:
         :param entries: list of entries
         :return: list of entries with added primary color
         """
+        file_obj = BytesIO()
+        print("image section")
+        img = self.page.to_image()
+        print("image section done")
         result = []
         for entry in entries:
-            result.append(self.analyze_primary_colour_entry(entry))
+            result.append(
+                self.analyze_primary_colour_entry(
+                    img.original.crop(entry["position"]), entry
+                )
+            )
         return result
 
-    def analyze_primary_colour_entry(self, entry, n_colors=8):
+    def analyze_primary_colour_entry(self, image, entry, n_colors=8):
         """
         analyze the primary colors inside an entry
+        :param image: the image section that should be analyzed
         :param entry: the entry that should be analyzed
         :param n_colors: number of top colors should be searched for
         :return: updated entry with top n colors
         """
-        file_obj = BytesIO()
-        self.get_image(entry["position"], resolution=50).save(file_obj, format="PNG")
-        file_obj.seek(0)
-        color_thief = ColorThiefWithWhite(file_obj)
-        colors = list(set(color_thief.get_palette(color_count=n_colors, quality=1)))
+        print("croped - start")
+        imgb = BytesIO()
+        image.save(imgb, format="JPEG", quality=90)
+        imgb.seek(0)
+        print("color thief start")
+
+        color_thief = ColorThiefWithWhite(imgb)
+        colors = list(set(color_thief.get_palette(color_count=n_colors)))
+        print("color thief done")
+
         print(colors)
         if len(colors) > 1:
             entry["colors"] = colors

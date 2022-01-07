@@ -219,7 +219,7 @@ def analyze_orgchart(orgchart_id: str, page: Optional[int]):
             variable_values={
                 "orgChartId": orgchart_id,
                 "status": "PARSED",
-                "rawSource": result.json()["items"],
+                "rawSource": json.dumps(result.dict()["items"]),
             },
         )
     return result

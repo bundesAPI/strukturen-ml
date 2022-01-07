@@ -11,7 +11,12 @@ from starlette.responses import StreamingResponse, Response
 import logging
 
 from cache import S3Cache
-from models import OrgchartParserResult, OrgchartItem, OrgchartEntryParserResult
+from models import (
+    OrgchartParserResult,
+    OrgchartItem,
+    OrgchartEntryParserResult,
+    OrgchartSourceItem,
+)
 from orgchart import OrgchartParser, deduplicate_entries
 from orgchart_entry import OrgChartEntryParser
 from queries import ORG_CHART_QUERY, UPDATE_ORG_CHART
@@ -195,11 +200,13 @@ def analyze_orgchart(orgchart_id: str, page: Optional[int]):
     items = []
     for itm in analyzed_items:
         items.append(
-            OrgchartItem(
-                position=itm["position"],
-                colors=itm["colors"],
-                text=itm["text"],
-                id=str(uuid.uuid4()),
+            OrgchartSourceItem(
+                source=OrgchartItem(
+                    position=itm["position"],
+                    colors=itm["colors"],
+                    text=itm["text"],
+                    id=str(uuid.uuid4()),
+                )
             )
         )
 
@@ -212,7 +219,7 @@ def analyze_orgchart(orgchart_id: str, page: Optional[int]):
             variable_values={
                 "orgChartId": orgchart_id,
                 "status": "PARSED",
-                "rawSource": result.json(),
+                "rawSource": result.json()["items"],
             },
         )
     return result

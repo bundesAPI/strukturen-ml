@@ -10,9 +10,13 @@ class OrgchartItem(BaseModel):
     id: str
 
 
+class OrgchartSourceItem(BaseModel):
+    source: OrgchartItem
+
+
 class OrgchartParserResult(BaseModel):
     status: str
-    items: List = None
+    items: List[OrgchartSourceItem] = None
     page: int
     method: str
 

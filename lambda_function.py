@@ -12,7 +12,7 @@ sentry_sdk.init(
     traces_sample_rate=1.0,
 )
 
-from main import app, analyze_orgchart, get_orgchart_image
+from main import app, analyze_orgchart, get_orgchart_image, cache_all_orgchart_images
 from mangum import Mangum
 
 
@@ -24,6 +24,7 @@ def main_endpoint_test():
 SNS_ACTIONS_MAPPING = {
     "analyze-orgchart": analyze_orgchart,
     "orgchart-image": get_orgchart_image,
+    "cache-all-orgchart-images": cache_all_orgchart_images,
 }
 
 

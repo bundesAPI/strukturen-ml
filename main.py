@@ -1,3 +1,4 @@
+import json
 import os
 import uuid
 from io import BytesIO
@@ -125,6 +126,43 @@ async def get_orgchart_image(
     return StreamingResponse(file_obj, media_type="image/png")
 
 
+@app.get("/cache-preview-images/")
+async def cache_all_orgchart_images(orgchart_id: str, page: Optional[int] = 0):
+    """
+    cache all orgchart preview images related to one orgchart
+    """
+    client = get_client(DOMAIN, CLIENT_ID, CLIENT_SECRET)
+    chart = client.execute(ORG_CHART_QUERY, variable_values={"id": orgchart_id})
+
+    if not chart["orgChart"]:
+        raise HTTPException(status_code=404, detail="OrgChart not found")
+    print(chart)
+    orgchart_source = json.loads(chart["orgChart"]["rawSource"])
+    logger.info("Fetched Orgchart")
+
+    # fetch orgchart as pdf
+    if MEDIA_DOMAIN:
+        url = f'{MEDIA_DOMAIN}{chart["orgChart"]["document"]}'
+    else:
+        url = chart["orgChart"]["document"]
+    blob = requests.get(url, stream=True)
+    parser = OrgchartParser(BytesIO(blob.content), page=page)
+    img = parser.page.to_image(resolution=144)
+
+    for item in orgchart_source["items"]:
+        position = item["position"]
+        cache_key = (
+            orgchart_id + "-" + str(page) + "-" + "-".join([str(p) for p in position])
+        )
+        imgb = BytesIO()
+        croped = img.original.crop(position)
+        croped.save(imgb, format="PNG", quality=90)
+        imgb.seek(0)
+        if CACHE:
+            CACHE.set_item(cache_key, imgb)
+    return {}
+
+
 @app.get("/analyze-orgchart/", response_model=OrgchartParserResult)
 async def analyze_orgchart(orgchart_id: str, page: Optional[int]):
     """
@@ -168,9 +206,6 @@ async def analyze_orgchart(orgchart_id: str, page: Optional[int]):
                 id=str(uuid.uuid4()),
             )
         )
-
-    if ORGCHART_IMAGE_CACHING_SNS_TOPIC:
-        generate_image_sns(ORGCHART_IMAGE_CACHING_SNS_TOPIC, orgchart_id, page)
 
     result = OrgchartParserResult(status="ok", items=items, page=page, method=method)
 

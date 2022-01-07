@@ -19,6 +19,7 @@ ORG_CHART_QUERY = gql(
         id
         document
         status
+        rawSource
         documentHash
         createdAt
       }

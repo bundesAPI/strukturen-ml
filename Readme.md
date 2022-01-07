@@ -20,10 +20,23 @@ Every method works the same way with the same GET-Parameters as documented in th
 ```
 
 ### Parse Orgchart
-**Topic:** ```orgchart-image-generator-ml-bund-dev```
+**Topic:** ```orgchart-parser-ml-bund-dev```
 ```json
 {
     "action": "analyze-orgchart",
+    "parameters": {
+        "orgchart_id": "T3JnQ2hhcnROb2RlOjQ=",
+        "page": 0
+    }
+}
+```
+
+
+### Cache all section images related to one orgchart
+**Topic:** ```orgchart-image-generator-ml-bund-dev```
+```json
+{
+    "action": "cache-all-orgchart-images",
     "parameters": {
         "orgchart_id": "T3JnQ2hhcnROb2RlOjQ=",
         "page": 0

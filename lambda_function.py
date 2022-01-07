@@ -29,15 +29,12 @@ SNS_ACTIONS_MAPPING = {
 
 
 def handler(event, context):
-    if "requestContext" not in event:
-        event["requestContext"] = {}
-
     # ugly glue-code to make serverless custom images combined with sns and magnum work for now
     if "Records" in event:
         # if there is a records list it should be always sns
         event = json.loads(event["Records"][0]["Sns"]["Message"])
         if event["action"] in SNS_ACTIONS_MAPPING:
-            asyncio.run(SNS_ACTIONS_MAPPING[event["action"]](**event["parameters"]))
+            SNS_ACTIONS_MAPPING[event["action"]](**event["parameters"])
         return {"ok": True, "message": "SNS Task executed successfully"}
     # end of ugly glue code
 

@@ -68,14 +68,14 @@ ORG_CHART_ENTRY_PARSER = OrgChartEntryParser()
 
 
 @app.get("/analyze-orgchart-entry/", response_model=OrgchartEntryParserResult)
-async def analyze_orgchart_item(text: str):
+def analyze_orgchart_item(text: str):
     nlp, result = ORG_CHART_ENTRY_PARSER.parse(text)
     result["parsed"] = ORG_CHART_ENTRY_PARSER.parse_to_entities(nlp)
     return result
 
 
 @app.get("/orgchart-image/", response_class=Response(media_type="image/png"))
-async def get_orgchart_image(
+def get_orgchart_image(
     orgchart_id: str,
     page: Optional[int],
     position: Optional[List[Union[float, int]]] = Query([]),
@@ -127,7 +127,7 @@ async def get_orgchart_image(
 
 
 @app.get("/cache-preview-images/")
-async def cache_all_orgchart_images(orgchart_id: str, page: Optional[int] = 0):
+def cache_all_orgchart_images(orgchart_id: str, page: Optional[int] = 0):
     """
     cache all orgchart preview images related to one orgchart
     """
@@ -164,7 +164,7 @@ async def cache_all_orgchart_images(orgchart_id: str, page: Optional[int] = 0):
 
 
 @app.get("/analyze-orgchart/", response_model=OrgchartParserResult)
-async def analyze_orgchart(orgchart_id: str, page: Optional[int]):
+def analyze_orgchart(orgchart_id: str, page: Optional[int]):
     """
     analyze an orgchart pdf file with multiple strategies (finding elements by pdf parsing and opencv). If an element has not been parsed yet it will be stored.
     :param orgchart_id: id of the orgchart

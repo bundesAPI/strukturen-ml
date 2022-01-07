@@ -194,10 +194,6 @@ async def analyze_orgchart(orgchart_id: str, page: Optional[int]):
 
     items = []
     for itm in analyzed_items:
-        if ORGCHART_IMAGE_CACHING_SNS_TOPIC:
-            generate_image_sns(
-                ORGCHART_IMAGE_CACHING_SNS_TOPIC, orgchart_id, page, itm["position"]
-            )
         items.append(
             OrgchartItem(
                 position=itm["position"],

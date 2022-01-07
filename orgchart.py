@@ -70,7 +70,8 @@ class OrgchartParser:
         :param entries: list of entries
         :return: list of entries with added primary color
         """
-        pool = Pool(processes=50)
+        print(self.analyze_primary_colour_entry(entries[0]))
+        pool = Pool(processes=5)
         result = pool.map(self.analyze_primary_colour_entry, entries)
         return result
 

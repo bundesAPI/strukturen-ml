@@ -15,6 +15,7 @@ RUN yum update && \
   unzip \
   libcurl4-openssl-dev\
   gcc \
+  libjpeg-devel \
   gcc-c++
 RUN python3.9 -m pip install -r requirements.txt -t ${LAMBDA_TASK_ROOT}/
 RUN python3.9 -m pip install awslambdaric --target ${LAMBDA_TASK_ROOT}/

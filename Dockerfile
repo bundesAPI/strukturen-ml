@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.8
+FROM public.ecr.aws/lambda/python:3.9
 
 COPY *.py ${LAMBDA_TASK_ROOT}/
 RUN ls
@@ -16,8 +16,8 @@ RUN yum update && \
   libcurl4-openssl-dev\
   gcc \
   gcc-c++
-RUN python3.8 -m pip install -r requirements.txt -t ${LAMBDA_TASK_ROOT}/
-RUN python3.8 -m pip install awslambdaric --target ${LAMBDA_TASK_ROOT}/
+RUN python3.9 -m pip install -r requirements.txt -t ${LAMBDA_TASK_ROOT}/
+RUN python3.9 -m pip install awslambdaric --target ${LAMBDA_TASK_ROOT}/
 RUN yum install -y mesa-libGL
 RUN yum install  -y ImageMagick ImageMagick-devel ImageMagick-perl
 

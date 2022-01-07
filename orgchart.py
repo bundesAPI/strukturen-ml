@@ -1,7 +1,6 @@
 import base64
 import logging
 from io import BytesIO
-from multiprocessing import Pool
 
 import numpy as np
 import pdfplumber
@@ -70,9 +69,9 @@ class OrgchartParser:
         :param entries: list of entries
         :return: list of entries with added primary color
         """
-        print(self.analyze_primary_colour_entry(entries[0]))
-        pool = Pool(processes=5)
-        result = pool.map(self.analyze_primary_colour_entry, entries)
+        result = []
+        for entry in entries:
+            result.append(self.analyze_primary_colour_entry(entry))
         return result
 
     def analyze_primary_colour_entry(self, entry, n_colors=8):

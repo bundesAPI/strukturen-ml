@@ -12,7 +12,7 @@ from PIL import Image
 from shapely.strtree import STRtree
 from shapely.geometry import box
 
-from utils import ColorThiefWithWhite
+from utils import ColorThiefWithWhite, replace_weird_characters
 from fastapi_utils.timing import add_timing_middleware, record_timing
 
 logging.basicConfig(level=logging.INFO)
@@ -45,7 +45,7 @@ class OrgchartParser:
                     ).extract_text(x_tolerance=3, y_tolerance=3)
                     if not text:
                         continue
-                    text = text.strip()
+                    text = replace_weird_characters(text.strip())
                     text_len = len(text)
                     size = (rect["x1"] - rect["x0"]) * (rect["bottom"] - rect["top"])
                     if 0 < text_len < 1000 and size > 400:
@@ -178,7 +178,7 @@ class OrgchartParser:
                 if text:
                     obj = {
                         "position": [int(x), int(y), int(x + w), int(y + h)],
-                        "text": text.strip(),
+                        "text": replace_weird_characters(text.strip()),
                     }
                     if len(text) > 0 and len(text) < 1000:
                         texts.append(text)

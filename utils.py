@@ -30,6 +30,12 @@ def get_client(domain, client_id, client_secret):
     return client
 
 
+def replace_weird_characters(text):
+    """sometimes some wierd unicode characters appear - lets just replace them for now and care about it later™"""
+    text = text.replace("�", "ti")
+    return text
+
+
 class ColorThiefWithWhite(ColorThief):
     """Color thief patched so it also looks for white pixels - because we are interested in alle Farben [all colors]"""
 

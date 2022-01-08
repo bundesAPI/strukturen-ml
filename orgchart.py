@@ -32,7 +32,7 @@ class OrgchartParser:
         """
         rect_json = []
         texts = []
-        for grp in [self.page.rects, self.page.images]:
+        for grp in [self.page.rects, self.page.curves, self.page.images]:
             for rect in grp:
                 try:
                     text = self.page.crop(

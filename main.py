@@ -190,12 +190,12 @@ def analyze_orgchart(orgchart_id: str, page: Optional[int]):
 
     pdf_analysis = deduplicate_entries(parser.analyze_pdf())
     opencv_analysis = deduplicate_entries(parser.analyze_opencv())
-    if len(opencv_analysis) > len(pdf_analysis):
-        method = "opencv"
-        analyzed_items = parser.analyze_primary_colours(opencv_analysis)
-    else:
+    if len(pdf_analysis) > 4 and len(opencv_analysis) < len(pdf_analysis):
         method = "pdf"
         analyzed_items = parser.analyze_primary_colours(pdf_analysis)
+    else:
+        method = "opencv"
+        analyzed_items = parser.analyze_primary_colours(opencv_analysis)
 
     items = []
     for itm in analyzed_items:

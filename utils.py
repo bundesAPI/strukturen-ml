@@ -32,7 +32,17 @@ def get_client(domain, client_id, client_secret):
 
 def replace_weird_characters(text):
     """sometimes some wierd unicode characters appear - lets just replace them for now and care about it later™"""
-    text = text.replace("�", "ti")
+    replacement_dict = {
+        "�": "ti",
+        "ﬀ": "ff",
+        "ﬁ": "fi",
+        "ﬂ": "fl",
+        "ﬃ": "ffi",
+        "ﬄ": "ffl",
+    }
+    for key in replacement_dict.keys():
+        if key in text:
+            text = text.replace(key, replacement_dict[key])
     return text
 
 

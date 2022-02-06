@@ -38,9 +38,9 @@ def replace_weird_characters(text):
         "ﬁ": "fi",
         "ﬂ": "fl",
         "ﬃ": "ffi",
-        "ﬄ": "ffl"
+        "ﬄ": "ffl",
     }
-    for key in replacement_dict:
+    for key in replacement_dict.keys():
         if key in text:
             text = text.replace(key, replacement_dict[key])
     return text
